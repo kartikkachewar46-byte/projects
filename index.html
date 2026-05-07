@@ -1,68 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Clean Car Racing Game</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>All In One Calculator</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<div id="ui">
-    <h1>🏁 CLEAN CAR RACING</h1>
+<div class="container">
 
-    
-    <div class="buttons">
-        <button onclick="startGame()">START</button>
-        <button onclick="pauseGame()">PAUSE / RESUME</button>
-        <button onclick="restartGame()">RESTART</button>
+  <h1>All In One Calculator</h1>
+
+  <div class="menu">
+    <button onclick="show('basic')">Basic</button>
+    <button onclick="show('age')">Age</button>
+    <button onclick="show('salary')">Salary</button>
+  </div>
+
+  <!-- BASIC -->
+  <div id="basic" class="box active">
+
+    <input type="text" id="display" class="display">
+
+    <div class="grid">
+      <button onclick="press('7')">7</button>
+      <button onclick="press('8')">8</button>
+      <button onclick="press('9')">9</button>
+      <button onclick="press('/')">÷</button>
+
+      <button onclick="press('4')">4</button>
+      <button onclick="press('5')">5</button>
+      <button onclick="press('6')">6</button>
+      <button onclick="press('*')">×</button>
+
+      <button onclick="press('1')">1</button>
+      <button onclick="press('2')">2</button>
+      <button onclick="press('3')">3</button>
+      <button onclick="press('-')">-</button>
+
+      <button onclick="clearDisplay()">C</button>
+      <button onclick="press('0')">0</button>
+      <button onclick="calculate()">=</button>
+      <button onclick="press('+')">+</button>
     </div>
 
-    
-    <div class="buttons">
-        <button onclick="selectCar('red')">Red</button>
-        <button onclick="selectCar('blue')">Blue</button>
-        <button onclick="selectCar('green')">Green</button>
+  </div>
+
+  <!-- AGE (CLEAN FIX) -->
+  <div id="age" class="box">
+
+    <h3>Age Calculator</h3>
+
+    <div class="centerBox">
+      <input type="date" id="birth">
     </div>
 
-    
-    <div class="buttons">
-
-        <button 
-        onmousedown="accelerateStart()" 
-        onmouseup="accelerateStop()" 
-        ontouchstart="accelerateStart()" 
-        ontouchend="accelerateStop()">
-        ⚡ ACCELERATE
-        </button>
-
-        <button 
-        onmousedown="brakeStart()" 
-        onmouseup="brakeStop()" 
-        ontouchstart="brakeStart()" 
-        ontouchend="brakeStop()">
-        🛑 BRAKE
-        </button>
-
+    <div class="buttonRow">
+      <button onclick="calcAge()">Find Age</button>
+      <button onclick="clearAge()">Clear</button>
     </div>
 
-    
-    <div class="stats">
-        Score: <span id="score">0</span> |
-        Level: <span id="level">1</span> |
-        Speed: <span id="speed">10</span>
+    <h2 id="ageResult"></h2>
+
+  </div>
+
+  <!-- SALARY (CLEAN FIX) -->
+  <div id="salary" class="box">
+
+    <h3>Salary Calculator</h3>
+
+    <div class="centerBox">
+      <input type="number" id="basicSalary" placeholder="Enter Basic Salary">
     </div>
-</div>
 
+    <div class="buttonRow">
+      <button onclick="calcSalary()">Calculate</button>
+      <button onclick="clearSalary()">Clear</button>
+    </div>
 
-<canvas id="game"></canvas>
+    <h2 id="salaryResult"></h2>
 
-<div id="controls">
-    <button onclick="left()">⬅</button>
-    <button onclick="right()">➡</button>
+  </div>
+
 </div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
