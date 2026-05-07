@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Clean Car Racing Game</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="ui">
+    <h1>🏁 CLEAN CAR RACING</h1>
+
+    
+    <div class="buttons">
+        <button onclick="startGame()">START</button>
+        <button onclick="pauseGame()">PAUSE / RESUME</button>
+        <button onclick="restartGame()">RESTART</button>
+    </div>
+
+    
+    <div class="buttons">
+        <button onclick="selectCar('red')">Red</button>
+        <button onclick="selectCar('blue')">Blue</button>
+        <button onclick="selectCar('green')">Green</button>
+    </div>
+
+    
+    <div class="buttons">
+
+        <button 
+        onmousedown="accelerateStart()" 
+        onmouseup="accelerateStop()" 
+        ontouchstart="accelerateStart()" 
+        ontouchend="accelerateStop()">
+        ⚡ ACCELERATE
+        </button>
+
+        <button 
+        onmousedown="brakeStart()" 
+        onmouseup="brakeStop()" 
+        ontouchstart="brakeStart()" 
+        ontouchend="brakeStop()">
+        🛑 BRAKE
+        </button>
+
+    </div>
+
+    
+    <div class="stats">
+        Score: <span id="score">0</span> |
+        Level: <span id="level">1</span> |
+        Speed: <span id="speed">10</span>
+    </div>
+</div>
+
+
+<canvas id="game"></canvas>
+
+<div id="controls">
+    <button onclick="left()">⬅</button>
+    <button onclick="right()">➡</button>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
