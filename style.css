@@ -1,89 +1,127 @@
 body {
-    margin: 0;
-    overflow: hidden;
-    background: #0a0a0a;
-    font-family: Arial;
-    color: white;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0f172a;
+  font-family: Arial;
 }
 
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
+.container {
+  width: 480px;
+  max-width: 95%;
+  background: #1e293b;
+  padding: 25px;
+  border-radius: 15px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 0 25px rgba(0,0,0,0.5);
 }
 
-
-#ui {
-    position: fixed;
-    width: 100%;
-    text-align: center;
-    z-index: 10;
-    padding: 10px;
+h1, h2, h3 {
+  color: white;
 }
 
-h1 {
-    color: #00ffcc;
-    font-size: 24px;
+/* MENU */
+.menu button {
+  margin: 5px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background: #334155;
+  color: white;
+  cursor: pointer;
 }
 
-
-.buttons {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+/* BOX */
+.box {
+  display: none;
+  margin-top: 15px;
 }
 
-.buttons button {
-    margin: 5px;
-    padding: 10px 15px;
-    border: none;
-    background: #222;
-    color: white;
-    cursor: pointer;
-    border-radius: 6px;
-    font-size: 14px;
+.box.active {
+  display: block;
 }
 
-.buttons button:hover {
-    background: #00ffcc;
-    color: black;
+/* BASIC DISPLAY */
+.display {
+  width: 95%;
+  padding: 12px;
+  font-size: 22px;
+  border: none;
+  border-radius: 8px;
+  margin: 10px 0;
+  text-align: right;
+  background: #111827;
+  color: white;
+  caret-color: white;
 }
 
-.stats {
-    margin-top: 10px;
-    font-size: 14px;
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
 }
 
-
-#controls {
-    position: fixed;
-    bottom: 15px;
-    width: 100%;
-    text-align: center;
+/* BUTTONS */
+button {
+  padding: 15px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #334155;
+  color: white;
 }
 
-#controls button {
-    font-size: 26px;
+button:hover {
+  background: #475569;
+}
+
+/* ===== CLEAN CENTER ALIGN FIX ===== */
+
+.centerBox {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.centerBox input {
+  width: 90%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #111827;
+  color: white;
+  text-align: center;
+}
+
+/* BUTTON ROW CENTER */
+.buttonRow {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.buttonRow button {
+  width: 40%;
+}
+
+/* RESPONSIVE */
+@media (max-width: 500px) {
+  .container {
     padding: 15px;
-    margin: 10px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255,255,255,0.2);
-    color: white;
-}
+  }
 
-@media (max-width: 600px) {
-    h1 {
-        font-size: 18px;
-    }
+  button {
+    font-size: 14px;
+    padding: 12px;
+  }
 
-    .buttons button {
-        padding: 8px 10px;
-        font-size: 12px;
-    }
-
-    #controls button {
-        font-size: 22px;
-        padding: 12px;
-    }
+  .display {
+    font-size: 18px;
+  }
 }

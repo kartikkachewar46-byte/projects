@@ -1,244 +1,72 @@
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
+let display = document.getElementById("display");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let running = false;
-let paused = false;
-let gameOver = false;
-
-let score = 0;
-let level = 1;
-
-let roadY = 0;
-let wheelRotation = 0;
-
-let carColor = "red";
-
-
-let baseSpeed = 10;
-let carSpeed = baseSpeed;
-let maxSpeed = 100;
-let minSpeed = 2;
-
-
-let accelerating = false;
-let braking = false;
-
-
-let player = {
-    x: canvas.width / 2,
-    y: canvas.height - 160,
-    w: 50,
-    h: 100
-};
-
-let enemies = [];
-
-
-function startGame() {
-    if (running) return;
-    running = true;
-    loop();
+/* SWITCH */
+function show(id) {
+  document.querySelectorAll(".box").forEach(b => b.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
+/* CURSOR INSERT */
+function press(val) {
+  let start = display.selectionStart;
+  let end = display.selectionEnd;
 
-function pauseGame() {
-    if (!running || gameOver) return;
-    paused = !paused;
+  let text = display.value;
+
+  display.value = text.slice(0, start) + val + text.slice(end);
+
+  display.setSelectionRange(start + val.length, start + val.length);
+  display.focus();
 }
 
-
-function restartGame() {
-    running = false;
-    paused = false;
-    gameOver = false;
-
-    score = 0;
-    level = 1;
-    carSpeed = baseSpeed;
-    enemies = [];
-
-    player.x = canvas.width / 2;
-
-    updateUI();
-    startGame();
+/* CLEAR BASIC */
+function clearDisplay() {
+  display.value = "";
 }
 
-
-function selectCar(color) {
-    carColor = color;
+/* CALCULATE */
+function calculate() {
+  try {
+    display.value = eval(display.value);
+  } catch {
+    display.value = "Error";
+  }
 }
 
+/* AGE */
+function calcAge() {
+  let b = new Date(document.getElementById("birth").value);
+  let t = new Date();
 
-function left() {
-    if (!running || paused) return;
-    player.x -= carSpeed * 0.5;
+  let age = t.getFullYear() - b.getFullYear();
+
+  document.getElementById("ageResult").innerText =
+    "Your Age: " + age;
 }
 
-function right() {
-    if (!running || paused) return;
-    player.x += carSpeed * 0.5;
+function clearAge() {
+  document.getElementById("birth").value = "";
+  document.getElementById("ageResult").innerText = "";
 }
 
+/* SALARY */
+function calcSalary() {
+  let basic = parseFloat(document.getElementById("basicSalary").value);
 
-function accelerateStart() {
-    accelerating = true;
+  let hra = basic * 0.2;
+  let da = basic * 0.1;
+  let ta = basic * 0.05;
+
+  let gross = basic + hra + da + ta;
+
+  document.getElementById("salaryResult").innerText =
+    "HRA: " + hra +
+    " | DA: " + da +
+    " | TA: " + ta +
+    " | Gross: " + gross;
 }
 
-function accelerateStop() {
-    accelerating = false;
-}
-
-function brakeStart() {
-    braking = true;
-}
-
-function brakeStop() {
-    braking = false;
-}
-
-
-document.addEventListener("keydown", e => {
-    if (paused) return;
-
-    if (e.key === "ArrowLeft") left();
-    if (e.key === "ArrowRight") right();
-
-    if (e.key === "ArrowUp") accelerating = true;
-    if (e.key === "ArrowDown") braking = true;
-});
-
-document.addEventListener("keyup", e => {
-    if (e.key === "ArrowUp") accelerating = false;
-    if (e.key === "ArrowDown") braking = false;
-});
-
-
-function spawnEnemy() {
-    enemies.push({
-        x: Math.random() * (canvas.width - 60),
-        y: -120,
-        w: 50,
-        h: 100,
-        speed: 4 + level * 0.5
-    });
-}
-
-
-function drawRoad() {
-    ctx.fillStyle = "#1a1a1a";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "white";
-
-    roadY += paused ? 0 : carSpeed * 0.8;
-    if (roadY > 60) roadY = 0;
-
-    for (let i = 0; i < canvas.height; i += 60) {
-        ctx.fillRect(canvas.width / 2, i + roadY, 5, 40);
-    }
-}
-
-function drawCar(x, y, color) {
-    ctx.fillStyle = color;
-    ctx.fillRect(x, y, 50, 100);
-
-    ctx.fillStyle = "#222";
-    ctx.fillRect(x + 8, y + 10, 34, 20);
-
-    wheelRotation += paused ? 0 : 0.3;
-
-    let offset = Math.sin(wheelRotation) * 2;
-
-    ctx.fillStyle = "black";
-    ctx.fillRect(x - 6, y + 15 + offset, 8, 20);
-    ctx.fillRect(x - 6, y + 65 - offset, 8, 20);
-    ctx.fillRect(x + 48, y + 15 - offset, 8, 20);
-    ctx.fillRect(x + 48, y + 65 + offset, 8, 20);
-}
-
-
-function endGame() {
-    running = false;
-    gameOver = true;
-}
-
-
-function drawEnemies() {
-    enemies.forEach((e, i) => {
-        e.y += paused ? 0 : e.speed;
-
-        drawCar(e.x, e.y, "gray");
-
-        if (
-            player.x < e.x + e.w &&
-            player.x + player.w > e.x &&
-            player.y < e.y + e.h &&
-            player.y + player.h > e.y
-        ) {
-            endGame();
-        }
-
-        if (e.y > canvas.height) {
-            enemies.splice(i, 1);
-            score += 10;
-
-            if (score % 100 === 0) level++;
-
-            updateUI();
-        }
-    });
-}
-
-
-function updateUI() {
-    document.getElementById("score").innerText = score;
-    document.getElementById("level").innerText = level;
-    document.getElementById("speed").innerText = Math.floor(carSpeed);
-}
-
-
-function loop() {
-    if (!running) return;
-
-  
-    if (accelerating && carSpeed < maxSpeed) {
-        carSpeed += 0.5;
-    }
-
-    if (braking && carSpeed > minSpeed) {
-        carSpeed -= 0.7;
-    }
-
-    
-    if (!accelerating && !braking && carSpeed > baseSpeed) {
-        carSpeed -= 0.1;
-    }
-
-    drawRoad();
-    drawCar(player.x, player.y, carColor);
-    drawEnemies();
-
-    updateUI();
-
-    if (gameOver) {
-        ctx.fillStyle = "rgba(0,0,0,0.7)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = "white";
-        ctx.font = "40px Arial";
-        ctx.textAlign = "center";
-
-        ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
-        ctx.fillText("Score: " + score, canvas.width / 2, canvas.height / 2 + 60);
-        return;
-    }
-
-    if (!paused && Math.random() < 0.03) {
-        spawnEnemy();
-    }
-
-    requestAnimationFrame(loop);
+function clearSalary() {
+  document.getElementById("basicSalary").value = "";
+  document.getElementById("salaryResult").innerText = "";
 }
